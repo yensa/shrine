@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  shrine:
+    image: shrine
+    env_file:
+      - .env
+    environment:
+      - FLASK_RUN_PORT=5100
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 5100:5100
