@@ -1,6 +1,8 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.8-slim-buster
 
+ENV PORT="5100"
+
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
@@ -11,6 +13,6 @@ COPY . /app
 RUN useradd appuser && chown -R appuser /app
 USER appuser
 
-ENV FLASK_APP=shrine/wsgi:app
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["python", "-m", "flask", "run", "--host", "0.0.0.0"]
+# FIXME: For some reason when using [] to specify the CMD, the $PORT doesn't work
+CMD "python" "-m" "uvicorn" "shrine.asgi:app" "--reload" "--host" "0.0.0.0" "--port" "$PORT"
